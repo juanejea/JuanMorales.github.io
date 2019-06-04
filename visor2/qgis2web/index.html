@@ -1,0 +1,1149 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/provincias_1.js"></script>
+        <script src="data/ZEPA_ES24_2.js"></script>
+        <script src="data/PORN_ES24_3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[39.74198284689069,-2.52254875768749],[42.8132312141917,1.6661847662839853]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>');
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        var layer_2015_pnoa_0 = L.WMS.layer("https://idearagon.aragon.es/AragonFotos", "2015_pnoa", {
+            format: 'image/jpeg',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            attribution: '',
+        });
+        map.addLayer(layer_2015_pnoa_0);
+        function pop_provincias_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nuts_id'] !== null ? Autolinker.link(String(feature.properties['nuts_id'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_provincias_1_0() {
+            return {
+                pane: 'pane_provincias_1',
+                opacity: 1,
+                color: 'rgba(228,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+            }
+        }
+        map.createPane('pane_provincias_1');
+        map.getPane('pane_provincias_1').style.zIndex = 401;
+        map.getPane('pane_provincias_1').style['mix-blend-mode'] = 'normal';
+        var layer_provincias_1 = new L.geoJson(json_provincias_1, {
+            attribution: '',
+            pane: 'pane_provincias_1',
+            onEachFeature: pop_provincias_1,
+            style: style_provincias_1_0,
+        });
+        bounds_group.addLayer(layer_provincias_1);
+        map.addLayer(layer_provincias_1);
+        function pop_ZEPA_ES24_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? Autolinker.link(String(feature.properties['objectid'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['inspireid'] !== null ? Autolinker.link(String(feature.properties['inspireid'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['legalfoundationdate'] !== null ? Autolinker.link(String(feature.properties['legalfoundationdate'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['legalfoundationdocument'] !== null ? Autolinker.link(String(feature.properties['legalfoundationdocument'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sitedesignation'] !== null ? Autolinker.link(String(feature.properties['sitedesignation'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sitename'] !== null ? Autolinker.link(String(feature.properties['sitename'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['siteprotectionclassification'] !== null ? Autolinker.link(String(feature.properties['siteprotectionclassification'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['designationscheme'] !== null ? Autolinker.link(String(feature.properties['designationscheme'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['designation'] !== null ? Autolinker.link(String(feature.properties['designation'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['percentageunderdesignation'] !== null ? Autolinker.link(String(feature.properties['percentageunderdesignation'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['code24'] !== null ? Autolinker.link(String(feature.properties['code24'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sitecode'] !== null ? Autolinker.link(String(feature.properties['sitecode'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['codeara'] !== null ? Autolinker.link(String(feature.properties['codeara'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['observations'] !== null ? Autolinker.link(String(feature.properties['observations'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['localid'] !== null ? Autolinker.link(String(feature.properties['localid'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">namespace</th>\
+                        <td>' + (feature.properties['namespace'] !== null ? Autolinker.link(String(feature.properties['namespace'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['versionid'] !== null ? Autolinker.link(String(feature.properties['versionid'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ZEPA_ES24_2_0(feature) {
+            switch(String(feature.properties['sitename'])) {
+                case 'Alto Cinca':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,251,255,1.0)',
+            }
+                    break;
+                case 'Collarada - Ibón de Ip':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,249,254,1.0)',
+            }
+                    break;
+                case 'Cotiella - Sierra Ferrera':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,246,253,1.0)',
+            }
+                    break;
+                case 'Cuenca de Gallocanta':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,244,252,1.0)',
+            }
+                    break;
+                case 'Dehesa de Rueda y Montolar':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(231,241,250,1.0)',
+            }
+                    break;
+                case 'Desfiladeros del río Jalón':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,239,249,1.0)',
+            }
+                    break;
+                case 'Desfiladeros del río Martín':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(223,236,248,1.0)',
+            }
+                    break;
+                case 'El Basal, Las Menorcas y Llanos de Cardiel':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,233,246,1.0)',
+            }
+                    break;
+                case 'El Turbón y Sierra de Sís':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,231,245,1.0)',
+            }
+                    break;
+                case 'Embalse del Pas y Santa Rita':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(212,228,244,1.0)',
+            }
+                    break;
+                case 'Estepas de Belchite - El Planerón - La Lomaza':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,226,243,1.0)',
+            }
+                    break;
+                case 'Estepas de Monegrillo y Pina':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,223,241,1.0)',
+            }
+                    break;
+                case 'Galachos de la Alfranca de Pastriz, La Cartuja y El Burgo de Ebro':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,221,240,1.0)',
+            }
+                    break;
+                case 'Hoces del río Mesa':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(195,218,238,1.0)',
+            }
+                    break;
+                case 'La Retuerta y Saladas de Sástago':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(188,215,236,1.0)',
+            }
+                    break;
+                case 'La Sotonera':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(182,212,234,1.0)',
+            }
+                    break;
+                case 'Laguna de Sariñena y Balsa de la Estación':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(176,210,232,1.0)',
+            }
+                    break;
+                case 'Lagunas y carrizales de Cinco Villas':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(169,207,229,1.0)',
+            }
+                    break;
+                case 'Loma la Negra - Bardenas':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,204,227,1.0)',
+            }
+                    break;
+                case 'Los Valles':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(156,201,225,1.0)',
+            }
+                    break;
+                case 'Matarraña - Aiguabarreix':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,197,223,1.0)',
+            }
+                    break;
+                case 'Montes de Alfajarín y Saso de Osera':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(139,192,221,1.0)',
+            }
+                    break;
+                case 'Montes de Zuera, Castejón de Valdejasa y El Castellar':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(131,188,220,1.0)',
+            }
+                    break;
+                case 'Montes Universales - Sierra del Tremedal':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,183,218,1.0)',
+            }
+                    break;
+                case 'Muelas del Jiloca: El Campo y La Torreta':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(115,179,216,1.0)',
+            }
+                    break;
+                case 'Ordesa y Monte Perdido':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(107,174,214,1.0)',
+            }
+                    break;
+                case 'Parameras de Alfambra':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(100,169,212,1.0)',
+            }
+                    break;
+                case 'Parameras de Blancas':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(93,165,209,1.0)',
+            }
+                    break;
+                case 'Parameras de Campo Visiedo':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(87,160,207,1.0)',
+            }
+                    break;
+                case 'Parameras de Pozondón':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(80,156,204,1.0)',
+            }
+                    break;
+                case 'Posets - Maladeta':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(74,151,201,1.0)',
+            }
+                    break;
+                case 'Puertos de Beceite':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(67,147,199,1.0)',
+            }
+                    break;
+                case 'Río Guadalope - Maestrazgo':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,142,196,1.0)',
+            }
+                    break;
+                case 'Río Huerva y Las Planas':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(56,137,193,1.0)',
+            }
+                    break;
+                case 'Salvatierra - Fozes de Fago  y Biniés':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(51,131,191,1.0)',
+            }
+                    break;
+                case 'San Juan de la Peña y Peña Oroel':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(46,126,188,1.0)',
+            }
+                    break;
+                case 'Serreta de Tramaced':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(40,121,185,1.0)',
+            }
+                    break;
+                case 'Sierra de Alcubierre':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(35,115,182,1.0)',
+            }
+                    break;
+                case 'Sierra de Canciás - Silves':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(30,110,179,1.0)',
+            }
+                    break;
+                case 'Sierra de Esdolomada y Morrones de Güel':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(26,104,174,1.0)',
+            }
+                    break;
+                case 'Sierra de Moncayo - Los Fayos - Sierra de Armas':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(21,99,170,1.0)',
+            }
+                    break;
+                case 'Sierra de Mongay':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(17,93,166,1.0)',
+            }
+                    break;
+                case 'Sierra y Cañones de Guara':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(13,88,161,1.0)',
+            }
+                    break;
+                case 'Sierras de Leyre y Orba':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,82,157,1.0)',
+            }
+                    break;
+                case 'Sierras de Santo Domingo y Caballera y río Onsella':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,75,148,1.0)',
+            }
+                    break;
+                case 'Sotos y carrizales del río Aragón':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,68,138,1.0)',
+            }
+                    break;
+                case 'Valcuerna, Serreta Negra y Liberola':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,61,127,1.0)',
+            }
+                    break;
+                case 'Viñamala':
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,55,117,1.0)',
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_ZEPA_ES24_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(8,48,107,1.0)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_ZEPA_ES24_2');
+        map.getPane('pane_ZEPA_ES24_2').style.zIndex = 402;
+        map.getPane('pane_ZEPA_ES24_2').style['mix-blend-mode'] = 'normal';
+        var layer_ZEPA_ES24_2 = new L.geoJson(json_ZEPA_ES24_2, {
+            attribution: '',
+            pane: 'pane_ZEPA_ES24_2',
+            onEachFeature: pop_ZEPA_ES24_2,
+            style: style_ZEPA_ES24_2_0,
+        });
+        bounds_group.addLayer(layer_ZEPA_ES24_2);
+        map.addLayer(layer_ZEPA_ES24_2);
+        function pop_PORN_ES24_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? Autolinker.link(String(feature.properties['OBJECTID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SOLAPE'] !== null ? Autolinker.link(String(feature.properties['SOLAPE'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PORN'] !== null ? Autolinker.link(String(feature.properties['PORN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['APROBACION'] !== null ? Autolinker.link(String(feature.properties['APROBACION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['INICIO'] !== null ? Autolinker.link(String(feature.properties['INICIO'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REVISION'] !== null ? Autolinker.link(String(feature.properties['REVISION'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CTIPFIGURA'] !== null ? Autolinker.link(String(feature.properties['CTIPFIGURA'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CESTADO'] !== null ? Autolinker.link(String(feature.properties['CESTADO'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CODIGO</th>\
+                        <td>' + (feature.properties['CODIGO'] !== null ? Autolinker.link(String(feature.properties['CODIGO'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SUPERFICIE</th>\
+                        <td>' + (feature.properties['SUPERFICIE'] !== null ? Autolinker.link(String(feature.properties['SUPERFICIE'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DESCRIPCIO'] !== null ? Autolinker.link(String(feature.properties['DESCRIPCIO'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TRAMITE'] !== null ? Autolinker.link(String(feature.properties['TRAMITE'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Length'] !== null ? Autolinker.link(String(feature.properties['Shape_Length'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Area'] !== null ? Autolinker.link(String(feature.properties['Shape_Area'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PORN_ES24_3_0(feature) {
+            switch(String(feature.properties['DESCRIPCIO'])) {
+                case 'Anayet-Partacua':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,245,240,1.0)',
+            }
+                    break;
+                case 'Comarca del Moncayo':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,229,217,1.0)',
+            }
+                    break;
+                case 'Complejo Lagunar de las Saladas de Chiprana':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,204,184,1.0)',
+            }
+                    break;
+                case 'Mancomunidad de los Valles, Fago, Aisa y Borau':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,175,147,1.0)',
+            }
+                    break;
+                case 'Parque de la Sierra y Cañones de Guara':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,143,111,1.0)',
+            }
+                    break;
+                case 'Parque Natural de Posets-Maladeta y de su área de influencia socioeconómica':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,112,80,1.0)',
+            }
+                    break;
+                case 'Sector oriental de Monegros y Bajo Ebro aragonés':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(244,77,55,1.0)',
+            }
+                    break;
+                case 'Sotos y Galachos del Ebro (tramo Escatrón-Zaragoza)':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(226,45,38,1.0)',
+            }
+                    break;
+                case 'Zona de Especial Protección para las Aves de la Laguna de Gallocanta':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(197,22,27,1.0)',
+            }
+                    break;
+                case 'Zonas esteparias de Monegros Sur':
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(165,15,21,1.0)',
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_PORN_ES24_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(103,0,13,1.0)',
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_PORN_ES24_3');
+        map.getPane('pane_PORN_ES24_3').style.zIndex = 403;
+        map.getPane('pane_PORN_ES24_3').style['mix-blend-mode'] = 'normal';
+        var layer_PORN_ES24_3 = new L.geoJson(json_PORN_ES24_3, {
+            attribution: '',
+            pane: 'pane_PORN_ES24_3',
+            onEachFeature: pop_PORN_ES24_3,
+            style: style_PORN_ES24_3_0,
+        });
+        bounds_group.addLayer(layer_PORN_ES24_3);
+        map.addLayer(layer_PORN_ES24_3);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'PORN_ES24<br /><table><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_AnayetPartacua0.png" /></td><td>Anayet-Partacua</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_ComarcadelMoncayo1.png" /></td><td>Comarca del Moncayo</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_ComplejoLagunardelasSaladasdeChiprana2.png" /></td><td>Complejo Lagunar de las Saladas de Chiprana</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_MancomunidaddelosVallesFagoAisayBorau3.png" /></td><td>Mancomunidad de los Valles, Fago, Aisa y Borau</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_ParquedelaSierrayCañonesdeGuara4.png" /></td><td>Parque de la Sierra y Cañones de Guara</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_ParqueNaturaldePosetsMaladetaydesuáreadeinfluenciasocioeconómica5.png" /></td><td>Parque Natural de Posets-Maladeta y de su área de influencia socioeconómica</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_SectororientaldeMonegrosyBajoEbroaragonés6.png" /></td><td>Sector oriental de Monegros y Bajo Ebro aragonés</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_SotosyGalachosdelEbrotramoEscatrónZaragoza7.png" /></td><td>Sotos y Galachos del Ebro (tramo Escatrón-Zaragoza)</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_ZonadeEspecialProtecciónparalasAvesdelaLagunadeGallocanta8.png" /></td><td>Zona de Especial Protección para las Aves de la Laguna de Gallocanta</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_ZonasestepariasdeMonegrosSur9.png" /></td><td>Zonas esteparias de Monegros Sur</td></tr><tr><td style="text-align: center;"><img src="legend/PORN_ES24_3_10.png" /></td><td></td></tr></table>': layer_PORN_ES24_3,'ZEPA_ES24<br /><table><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_AltoCinca0.png" /></td><td>Alto Cinca</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_CollaradaIbóndeIp1.png" /></td><td>Collarada - Ibón de Ip</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_CotiellaSierraFerrera2.png" /></td><td>Cotiella - Sierra Ferrera</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_CuencadeGallocanta3.png" /></td><td>Cuenca de Gallocanta</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_DehesadeRuedayMontolar4.png" /></td><td>Dehesa de Rueda y Montolar</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_DesfiladerosdelríoJalón5.png" /></td><td>Desfiladeros del río Jalón</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_DesfiladerosdelríoMartín6.png" /></td><td>Desfiladeros del río Martín</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_ElBasalLasMenorcasyLlanosdeCardiel7.png" /></td><td>El Basal, Las Menorcas y Llanos de Cardiel</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_ElTurbónySierradeSís8.png" /></td><td>El Turbón y Sierra de Sís</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_EmbalsedelPasySantaRita9.png" /></td><td>Embalse del Pas y Santa Rita</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_EstepasdeBelchiteElPlanerónLaLomaza10.png" /></td><td>Estepas de Belchite - El Planerón - La Lomaza</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_EstepasdeMonegrilloyPina11.png" /></td><td>Estepas de Monegrillo y Pina</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_GalachosdelaAlfrancadePastrizLaCartujayElBurgodeEbro12.png" /></td><td>Galachos de la Alfranca de Pastriz, La Cartuja y El Burgo de Ebro</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_HocesdelríoMesa13.png" /></td><td>Hoces del río Mesa</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_LaRetuertaySaladasdeSástago14.png" /></td><td>La Retuerta y Saladas de Sástago</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_LaSotonera15.png" /></td><td>La Sotonera</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_LagunadeSariñenayBalsadelaEstación16.png" /></td><td>Laguna de Sariñena y Balsa de la Estación</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_LagunasycarrizalesdeCincoVillas17.png" /></td><td>Lagunas y carrizales de Cinco Villas</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_LomalaNegraBardenas18.png" /></td><td>Loma la Negra - Bardenas</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_LosValles19.png" /></td><td>Los Valles</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_MatarrañaAiguabarreix20.png" /></td><td>Matarraña - Aiguabarreix</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_MontesdeAlfajarínySasodeOsera21.png" /></td><td>Montes de Alfajarín y Saso de Osera</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_MontesdeZueraCastejóndeValdejasayElCastellar22.png" /></td><td>Montes de Zuera, Castejón de Valdejasa y El Castellar</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_MontesUniversalesSierradelTremedal23.png" /></td><td>Montes Universales - Sierra del Tremedal</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_MuelasdelJilocaElCampoyLaTorreta24.png" /></td><td>Muelas del Jiloca: El Campo y La Torreta</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_OrdesayMontePerdido25.png" /></td><td>Ordesa y Monte Perdido</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_ParamerasdeAlfambra26.png" /></td><td>Parameras de Alfambra</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_ParamerasdeBlancas27.png" /></td><td>Parameras de Blancas</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_ParamerasdeCampoVisiedo28.png" /></td><td>Parameras de Campo Visiedo</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_ParamerasdePozondón29.png" /></td><td>Parameras de Pozondón</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_PosetsMaladeta30.png" /></td><td>Posets - Maladeta</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_PuertosdeBeceite31.png" /></td><td>Puertos de Beceite</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_RíoGuadalopeMaestrazgo32.png" /></td><td>Río Guadalope - Maestrazgo</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_RíoHuervayLasPlanas33.png" /></td><td>Río Huerva y Las Planas</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SalvatierraFozesdeFagoyBiniés34.png" /></td><td>Salvatierra - Fozes de Fago  y Biniés</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SanJuandelaPeñayPeñaOroel35.png" /></td><td>San Juan de la Peña y Peña Oroel</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SerretadeTramaced36.png" /></td><td>Serreta de Tramaced</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SierradeAlcubierre37.png" /></td><td>Sierra de Alcubierre</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SierradeCanciásSilves38.png" /></td><td>Sierra de Canciás - Silves</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SierradeEsdolomadayMorronesdeGüel39.png" /></td><td>Sierra de Esdolomada y Morrones de Güel</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SierradeMoncayoLosFayosSierradeArmas40.png" /></td><td>Sierra de Moncayo - Los Fayos - Sierra de Armas</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SierradeMongay41.png" /></td><td>Sierra de Mongay</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SierrayCañonesdeGuara42.png" /></td><td>Sierra y Cañones de Guara</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SierrasdeLeyreyOrba43.png" /></td><td>Sierras de Leyre y Orba</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SierrasdeSantoDomingoyCaballerayríoOnsella44.png" /></td><td>Sierras de Santo Domingo y Caballera y río Onsella</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_SotosycarrizalesdelríoAragón45.png" /></td><td>Sotos y carrizales del río Aragón</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_ValcuernaSerretaNegrayLiberola46.png" /></td><td>Valcuerna, Serreta Negra y Liberola</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_Viñamala47.png" /></td><td>Viñamala</td></tr><tr><td style="text-align: center;"><img src="legend/ZEPA_ES24_2_48.png" /></td><td></td></tr></table>': layer_ZEPA_ES24_2,'<img src="legend/provincias_1.png" /> provincias': layer_provincias_1,"2015_pnoa": layer_2015_pnoa_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_ZEPA_ES24_2,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'namespace'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        </script>
+    </body>
+</html>
