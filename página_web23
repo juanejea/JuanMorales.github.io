@@ -183,7 +183,7 @@ representación cartográfica y el análisis espacial.</p>   <!--parrafo de desc
              Habilidades básicas en ; SQL Y R</li>
           <div>
 
-            <img src="multimedia/leyenda.png"
+            <img src="multimedia/leyenda.jpg"
              width=500px
              height=311px
              id=img3 >
@@ -295,7 +295,7 @@ representación cartográfica y el análisis espacial.</p>   <!--parrafo de desc
  <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="qgis">
    <div class="w-100">
      <h2> VISOR DE QGIS </h2>
-     <a href="visor2/qgis2web/index.html"><img src= "multimedia/captura.png" width=500px height=500px></a> <!--Se introduce una imagen con hipervinculo al visor generado en Qgis-->
+     <a href="visor2/qgis2web/index.html"><img src= "multimedia/captura.jpg" width=500px height=500px></a> <!--Se introduce una imagen con hipervinculo al visor generado en Qgis-->
      <h4>Clicar en la imagen para visualizar</h4>
      <p> Visualizador web de los Porn y ZEPAS en la comunidad autónoma de Aragón, con la división provincial
        incorporada. Esta cartografía se ha generado con el software QGIS, y el plugin QGIS2Web. </p>
